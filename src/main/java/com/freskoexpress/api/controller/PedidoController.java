@@ -1,0 +1,49 @@
+package com.freskoexpress.api.controller;
+
+import com.freskoexpress.domain.pedido.PedidoService;
+import com.freskoexpress.domain.pedido.dto.*;
+import com.freskoexpress.shared.enums.EstadoPedido;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/pedidos")
+@RequiredArgsConstructor
+@Tag(name = "Pedidos", description = "Ciclo de vida del pedido con State Pattern")
+public class PedidoController {
+
+    private final PedidoService pedidoService;
+
+    @PostMapping
+    @Operation(summary = "Crear pedido — asignación FIFO automática de lotes")
+    public ResponseEntity<PedidoResponse> crear(@Valid @RequestBody CrearPedidoRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.crearPedido(request));
+    }
+
+    @GetMapping("/cliente/{idCliente}")
+    @Operation(summary = "Historial de pedidos de un cliente")
+    public ResponseEntity<List<PedidoResponse>> porCliente(@PathVariable Integer idCliente) {
+        return ResponseEntity.ok(pedidoService.listarPorCliente(idCliente));
+    }
+
+    @GetMapping("/sin-ruta")
+    @Operation(summary = "Pedidos confirmados pendientes de asignación a ruta")
+    public ResponseEntity<List<PedidoResponse>> sinRuta() {
+        return ResponseEntity.ok(pedidoService.listarPendientesSinRuta());
+    }
+
+    @PatchMapping("/{id}/estado")
+    @Operation(summary = "Avanzar estado del pedido — validado por State Pattern")
+    public ResponseEntity<PedidoResponse> avanzarEstado(
+            @PathVariable Integer id,
+            @RequestParam EstadoPedido estado) {
+        return ResponseEntity.ok(pedidoService.avanzarEstado(id, estado));
+    }
+}
