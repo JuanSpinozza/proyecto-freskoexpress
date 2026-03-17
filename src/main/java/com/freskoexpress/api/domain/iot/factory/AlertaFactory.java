@@ -1,11 +1,11 @@
 package com.freskoexpress.api.domain.iot.factory;
 
-import com.freskoexpress.domain.inventario.Producto;
-import com.freskoexpress.domain.iot.Alerta;
-import com.freskoexpress.domain.iot.LecturaSensor;
-import com.freskoexpress.domain.logistica.Vehiculo;
-import com.freskoexpress.shared.enums.SeveridadAlerta;
-import com.freskoexpress.shared.enums.TipoAlerta;
+import com.freskoexpress.api.domain.inventario.Producto;
+import com.freskoexpress.api.domain.iot.Alerta;
+import com.freskoexpress.api.domain.iot.LecturaSensor;
+import com.freskoexpress.api.domain.logistica.Vehiculo;
+import com.freskoexpress.api.shared.enums.SeveridadAlerta;
+import com.freskoexpress.api.shared.enums.TipoAlerta;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

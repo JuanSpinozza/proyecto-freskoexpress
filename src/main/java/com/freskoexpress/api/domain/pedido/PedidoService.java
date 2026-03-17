@@ -1,15 +1,14 @@
 package com.freskoexpress.api.domain.pedido;
 
-import com.freskoexpress.domain.inventario.Lote;
-import com.freskoexpress.domain.inventario.LoteRepository;
-import com.freskoexpress.domain.inventario.ProductoRepository;
-import com.freskoexpress.domain.pedido.dto.*;
-import com.freskoexpress.domain.pedido.state.PedidoState;
-import com.freskoexpress.domain.pedido.state.PedidoStateResolver;
-import com.freskoexpress.shared.enums.EstadoPedido;
-import com.freskoexpress.shared.exception.BusinessException;
-import com.freskoexpress.shared.exception.ResourceNotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.freskoexpress.api.domain.inventario.Lote;
+import com.freskoexpress.api.domain.inventario.LoteRepository;
+import com.freskoexpress.api.domain.inventario.ProductoRepository;
+import com.freskoexpress.api.domain.pedido.dto.*;
+import com.freskoexpress.api.domain.pedido.state.PedidoState;
+import com.freskoexpress.api.domain.pedido.state.PedidoStateResolver;
+import com.freskoexpress.api.shared.enums.EstadoPedido;
+import com.freskoexpress.api.shared.exception.BusinessException;
+import com.freskoexpress.api.shared.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,27 +17,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PedidoService {
 
     private final PedidoRepository    pedidoRepository;
     private final ClienteRepository   clienteRepository;
     private final LoteRepository      loteRepository;
     private final ProductoRepository  productoRepository;
-    private final PedidoStateResolver stateResolver;     // State Pattern
+    private final PedidoStateResolver stateResolver;
+
+    public PedidoService(PedidoRepository pedidoRepository,
+                         ClienteRepository clienteRepository,
+                         LoteRepository loteRepository,
+                         ProductoRepository productoRepository,
+                         PedidoStateResolver stateResolver) {
+        this.pedidoRepository   = pedidoRepository;
+        this.clienteRepository  = clienteRepository;
+        this.loteRepository     = loteRepository;
+        this.productoRepository = productoRepository;
+        this.stateResolver      = stateResolver;
+    }
 
     @Transactional
     public PedidoResponse crearPedido(CrearPedidoRequest request) {
         Cliente cliente = clienteRepository.findById(request.idCliente())
-            .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
 
         Pedido pedido = Pedido.builder()
-            .cliente(cliente)
-            .fechaEntregaReq(request.fechaEntregaReq())
-            .ventanaInicio(request.ventanaInicio())
-            .ventanaFin(request.ventanaFin())
-            .estado(EstadoPedido.confirmado)
-            .build();
+                .cliente(cliente)
+                .fechaEntregaReq(request.fechaEntregaReq())
+                .ventanaInicio(request.ventanaInicio())
+                .ventanaFin(request.ventanaFin())
+                .estado(EstadoPedido.confirmado)
+                .build();
 
         List<DetallePedido> detalles = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
@@ -58,10 +68,12 @@ public class PedidoService {
 
             BigDecimal precio = lote.getProducto().getPrecioUnitario();
             detalles.add(DetallePedido.builder()
-                .id(new DetallePedidoId())
-                .pedido(pedido).lote(lote)
-                .cantidad(item.cantidad()).precioUnitario(precio)
-                .build());
+                    .id(new DetallePedidoId())
+                    .pedido(pedido)
+                    .lote(lote)
+                    .cantidad(item.cantidad())
+                    .precioUnitario(precio)
+                    .build());
             total = total.add(precio.multiply(item.cantidad()));
         }
 
@@ -77,7 +89,7 @@ public class PedidoService {
     @Transactional
     public PedidoResponse avanzarEstado(Integer idPedido, EstadoPedido nuevoEstado) {
         Pedido pedido = pedidoRepository.findById(idPedido)
-            .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado: " + idPedido));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado: " + idPedido));
 
         PedidoState estadoActual = stateResolver.resolve(pedido.getEstado());
 
@@ -86,7 +98,8 @@ public class PedidoService {
             case en_ruta     -> estadoActual.aEnRuta(pedido);
             case entregado   -> estadoActual.aEntregado(pedido);
             case fallido     -> estadoActual.aFallido(pedido);
-            default -> throw new BusinessException("Transición de estado no permitida: " + nuevoEstado);
+            default -> throw new BusinessException(
+                    "Transición de estado no permitida: " + nuevoEstado);
         }
 
         return PedidoResponse.from(pedidoRepository.save(pedido));
@@ -94,11 +107,11 @@ public class PedidoService {
 
     public List<PedidoResponse> listarPorCliente(Integer idCliente) {
         return pedidoRepository.findByClienteIdClienteOrderByFechaPedidoDesc(idCliente)
-            .stream().map(PedidoResponse::from).toList();
+                .stream().map(PedidoResponse::from).toList();
     }
 
     public List<PedidoResponse> listarPendientesSinRuta() {
         return pedidoRepository.findByEstadoAndIdRutaIsNull(EstadoPedido.confirmado)
-            .stream().map(PedidoResponse::from).toList();
+                .stream().map(PedidoResponse::from).toList();
     }
 }

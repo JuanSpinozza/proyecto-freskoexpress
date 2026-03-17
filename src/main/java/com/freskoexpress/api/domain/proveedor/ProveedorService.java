@@ -1,25 +1,31 @@
 package com.freskoexpress.api.domain.proveedor;
 
-import com.freskoexpress.domain.auth.Usuario;
-import com.freskoexpress.domain.auth.UsuarioRepository;
-import com.freskoexpress.domain.proveedor.dto.*;
-import com.freskoexpress.domain.proveedor.validation.ProveedorValidationChain;
-import com.freskoexpress.shared.enums.EstadoProveedor;
-import com.freskoexpress.shared.exception.BusinessException;
-import com.freskoexpress.shared.exception.ResourceNotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.freskoexpress.api.domain.auth.Usuario;
+import com.freskoexpress.api.domain.auth.UsuarioRepository;
+import com.freskoexpress.api.domain.proveedor.dto.*;
+import com.freskoexpress.api.domain.proveedor.validation.ProveedorValidationChain;
+import com.freskoexpress.api.shared.enums.EstadoProveedor;
+import com.freskoexpress.api.shared.exception.BusinessException;
+import com.freskoexpress.api.shared.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ProveedorService {
 
-    private final ProveedorRepository     proveedorRepository;
-    private final UsuarioRepository       usuarioRepository;
+    private final ProveedorRepository      proveedorRepository;
+    private final UsuarioRepository        usuarioRepository;
     private final ProveedorValidationChain validationChain;  // Chain of Responsibility
+
+    public ProveedorService(ProveedorRepository proveedorRepository,
+                            UsuarioRepository usuarioRepository,
+                            ProveedorValidationChain validationChain) {
+        this.proveedorRepository = proveedorRepository;
+        this.usuarioRepository   = usuarioRepository;
+        this.validationChain     = validationChain;
+    }
 
     @Transactional
     public ProveedorResponse registrar(CrearProveedorRequest request) {
@@ -27,13 +33,13 @@ public class ProveedorService {
         validationChain.validate(request);
 
         Proveedor proveedor = Proveedor.builder()
-            .nit(request.nit())
-            .razonSocial(request.razonSocial())
-            .contactoCorreo(request.contactoCorreo())
-            .contactoTelefono(request.contactoTelefono())
-            .capacidadSemanal(request.capacidadSemanal())
-            .estado(EstadoProveedor.pendiente)
-            .build();
+                .nit(request.nit())
+                .razonSocial(request.razonSocial())
+                .contactoCorreo(request.contactoCorreo())
+                .contactoTelefono(request.contactoTelefono())
+                .capacidadSemanal(request.capacidadSemanal())
+                .estado(EstadoProveedor.pendiente)
+                .build();
 
         return ProveedorResponse.from(proveedorRepository.save(proveedor));
     }
@@ -42,15 +48,18 @@ public class ProveedorService {
     public ProveedorResponse revisar(Integer idProveedor, Integer idRevisor,
                                      RevisionProveedorRequest request) {
         Proveedor proveedor = proveedorRepository.findById(idProveedor)
-            .orElseThrow(() -> new ResourceNotFoundException("Proveedor no encontrado: " + idProveedor));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Proveedor no encontrado: " + idProveedor));
 
         if (request.nuevoEstado() == EstadoProveedor.rechazado
                 && (request.razonRechazo() == null || request.razonRechazo().isBlank())) {
-            throw new BusinessException("La razón de rechazo es obligatoria al rechazar un proveedor");
+            throw new BusinessException(
+                    "La razón de rechazo es obligatoria al rechazar un proveedor");
         }
 
         Usuario revisor = usuarioRepository.findById(idRevisor)
-            .orElseThrow(() -> new ResourceNotFoundException("Revisor no encontrado: " + idRevisor));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Revisor no encontrado: " + idRevisor));
 
         proveedor.setEstado(request.nuevoEstado());
         proveedor.setRazonRechazo(request.razonRechazo());
@@ -61,12 +70,13 @@ public class ProveedorService {
 
     public List<ProveedorResponse> listarPorEstado(EstadoProveedor estado) {
         return proveedorRepository.findByEstado(estado)
-            .stream().map(ProveedorResponse::from).toList();
+                .stream().map(ProveedorResponse::from).toList();
     }
 
     public ProveedorResponse obtener(Integer id) {
         return proveedorRepository.findById(id)
-            .map(ProveedorResponse::from)
-            .orElseThrow(() -> new ResourceNotFoundException("Proveedor no encontrado: " + id));
+                .map(ProveedorResponse::from)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Proveedor no encontrado: " + id));
     }
 }

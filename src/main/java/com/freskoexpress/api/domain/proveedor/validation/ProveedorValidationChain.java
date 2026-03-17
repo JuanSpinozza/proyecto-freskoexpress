@@ -1,7 +1,6 @@
 package com.freskoexpress.api.domain.proveedor.validation;
 
-import com.freskoexpress.domain.proveedor.dto.CrearProveedorRequest;
-import lombok.RequiredArgsConstructor;
+import com.freskoexpress.api.domain.proveedor.dto.CrearProveedorRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
  * Orden de ejecución: Formato NIT → NIT único → Capacidad → Contacto
  */
 @Component
-@RequiredArgsConstructor
 public class ProveedorValidationChain {
 
     private final NitFormatoValidator nitFormato;
@@ -21,11 +19,21 @@ public class ProveedorValidationChain {
     private final CapacidadValidator  capacidad;
     private final ContactoValidator   contacto;
 
+    public ProveedorValidationChain(NitFormatoValidator nitFormato,
+                                    NitUnicoValidator nitUnico,
+                                    CapacidadValidator capacidad,
+                                    ContactoValidator contacto) {
+        this.nitFormato = nitFormato;
+        this.nitUnico   = nitUnico;
+        this.capacidad  = capacidad;
+        this.contacto   = contacto;
+    }
+
     public void validate(CrearProveedorRequest request) {
         nitFormato
-            .setNext(nitUnico)
-            .setNext(capacidad)
-            .setNext(contacto);
+                .setNext(nitUnico)
+                .setNext(capacidad)
+                .setNext(contacto);
 
         nitFormato.validate(request);
     }

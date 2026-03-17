@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.pedido;
 
-import com.freskoexpress.shared.enums.EstadoPedido;
+import com.freskoexpress.api.shared.enums.EstadoPedido;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

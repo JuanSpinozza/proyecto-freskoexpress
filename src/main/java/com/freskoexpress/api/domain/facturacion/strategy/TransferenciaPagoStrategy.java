@@ -1,8 +1,8 @@
 package com.freskoexpress.api.domain.facturacion.strategy;
 
-import com.freskoexpress.domain.facturacion.dto.RegistrarPagoRequest;
-import com.freskoexpress.shared.enums.MetodoPago;
-import com.freskoexpress.shared.exception.BusinessException;
+import com.freskoexpress.api.domain.facturacion.dto.RegistrarPagoRequest;
+import com.freskoexpress.api.shared.enums.MetodoPago;
+import com.freskoexpress.api.shared.exception.BusinessException;
 import org.springframework.stereotype.Component;
 
 /**

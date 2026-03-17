@@ -1,8 +1,8 @@
 package com.freskoexpress.api.domain.iot.dto;
 
-import com.freskoexpress.domain.iot.Alerta;
-import com.freskoexpress.shared.enums.SeveridadAlerta;
-import com.freskoexpress.shared.enums.TipoAlerta;
+import com.freskoexpress.api.domain.iot.Alerta;
+import com.freskoexpress.api.shared.enums.SeveridadAlerta;
+import com.freskoexpress.api.shared.enums.TipoAlerta;
 
 import java.time.OffsetDateTime;
 

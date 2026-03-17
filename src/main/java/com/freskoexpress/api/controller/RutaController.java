@@ -1,12 +1,11 @@
 package com.freskoexpress.api.controller;
 
-import com.freskoexpress.domain.logistica.RutaService;
-import com.freskoexpress.domain.logistica.dto.*;
-import com.freskoexpress.shared.enums.EstadoRuta;
+import com.freskoexpress.api.domain.logistica.RutaService;
+import com.freskoexpress.api.domain.logistica.dto.*;
+import com.freskoexpress.api.shared.enums.EstadoRuta;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +16,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/rutas")
-@RequiredArgsConstructor
 @Tag(name = "Rutas", description = "Planificación de rutas con Facade Pattern")
 public class RutaController {
 
     private final RutaService rutaService;
+
+    public RutaController(RutaService rutaService) {
+        this.rutaService = rutaService;
+    }
 
     @PostMapping
     @Operation(summary = "Planificar ruta — orquestado por PlanificacionFacade")

@@ -1,11 +1,10 @@
 package com.freskoexpress.api.controller;
 
-import com.freskoexpress.domain.auth.AuthService;
-import com.freskoexpress.domain.auth.dto.*;
+import com.freskoexpress.api.domain.auth.AuthService;
+import com.freskoexpress.api.domain.auth.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +13,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@RequiredArgsConstructor
 @Tag(name = "Auth", description = "Autenticación y gestión de usuarios")
 public class AuthController {
 
     private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/login")
     @Operation(summary = "Iniciar sesión — retorna JWT")

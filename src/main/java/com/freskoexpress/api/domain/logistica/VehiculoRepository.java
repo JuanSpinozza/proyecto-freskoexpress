@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.logistica;
 
-import com.freskoexpress.shared.enums.TipoVehiculo;
+import com.freskoexpress.api.shared.enums.TipoVehiculo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

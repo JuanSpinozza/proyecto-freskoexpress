@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.mantenimiento.dto;
 
-import com.freskoexpress.shared.enums.TipoMantenimiento;
+import com.freskoexpress.api.shared.enums.TipoMantenimiento;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;

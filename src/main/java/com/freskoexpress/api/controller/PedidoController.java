@@ -1,12 +1,11 @@
 package com.freskoexpress.api.controller;
 
-import com.freskoexpress.domain.pedido.PedidoService;
-import com.freskoexpress.domain.pedido.dto.*;
-import com.freskoexpress.shared.enums.EstadoPedido;
+import com.freskoexpress.api.domain.pedido.PedidoService;
+import com.freskoexpress.api.domain.pedido.dto.*;
+import com.freskoexpress.api.shared.enums.EstadoPedido;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/pedidos")
-@RequiredArgsConstructor
 @Tag(name = "Pedidos", description = "Ciclo de vida del pedido con State Pattern")
 public class PedidoController {
 
     private final PedidoService pedidoService;
+
+    public PedidoController(PedidoService pedidoService) {
+        this.pedidoService = pedidoService;
+    }
 
     @PostMapping
     @Operation(summary = "Crear pedido — asignación FIFO automática de lotes")

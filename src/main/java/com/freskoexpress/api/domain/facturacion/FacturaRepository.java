@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.facturacion;
 
-import com.freskoexpress.shared.enums.EstadoFactura;
+import com.freskoexpress.api.shared.enums.EstadoFactura;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

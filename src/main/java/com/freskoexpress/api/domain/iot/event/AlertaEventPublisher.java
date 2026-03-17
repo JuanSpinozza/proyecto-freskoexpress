@@ -1,7 +1,6 @@
 package com.freskoexpress.api.domain.iot.event;
 
-import com.freskoexpress.domain.iot.Alerta;
-import lombok.RequiredArgsConstructor;
+import com.freskoexpress.api.domain.iot.Alerta;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +10,13 @@ import org.springframework.stereotype.Component;
  * de notificaciones directamente, manteniendo bajo acoplamiento.
  */
 @Component
-@RequiredArgsConstructor
 public class AlertaEventPublisher {
 
     private final ApplicationEventPublisher publisher;
+
+    public AlertaEventPublisher(ApplicationEventPublisher publisher) {
+        this.publisher = publisher;
+    }
 
     public void publicar(Alerta alerta) {
         publisher.publishEvent(new AlertaGeneradaEvent(this, alerta));

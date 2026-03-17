@@ -1,14 +1,14 @@
 package com.freskoexpress.api.domain.mantenimiento;
 
-import com.freskoexpress.domain.iot.Alerta;
-import com.freskoexpress.domain.iot.AlertaRepository;
-import com.freskoexpress.domain.iot.event.AlertaEventPublisher;
-import com.freskoexpress.domain.iot.factory.AlertaFactory;
-import com.freskoexpress.domain.logistica.Vehiculo;
-import com.freskoexpress.domain.logistica.VehiculoRepository;
-import com.freskoexpress.domain.mantenimiento.dto.*;
-import com.freskoexpress.shared.exception.ResourceNotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.freskoexpress.api.domain.iot.Alerta;
+import com.freskoexpress.api.domain.iot.AlertaRepository;
+import com.freskoexpress.api.domain.iot.event.AlertaEventPublisher;
+import com.freskoexpress.api.domain.iot.factory.AlertaFactory;
+import com.freskoexpress.api.domain.logistica.Vehiculo;
+import com.freskoexpress.api.domain.logistica.VehiculoRepository;
+import com.freskoexpress.api.domain.mantenimiento.dto.*;
+import com.freskoexpress.api.shared.exception.BusinessException;
+import com.freskoexpress.api.shared.exception.ResourceNotFoundException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,35 +17,46 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class MantenimientoService {
 
     private final MantenimientoRepository mantenimientoRepository;
     private final VehiculoRepository      vehiculoRepository;
-    private final AlertaFactory           alertaFactory;          // Factory Method
+    private final AlertaFactory           alertaFactory;        // Factory Method
     private final AlertaRepository        alertaRepository;
-    private final AlertaEventPublisher    alertaEventPublisher;   // Observer
+    private final AlertaEventPublisher    alertaEventPublisher; // Observer
+
+    public MantenimientoService(MantenimientoRepository mantenimientoRepository,
+                                VehiculoRepository vehiculoRepository,
+                                AlertaFactory alertaFactory,
+                                AlertaRepository alertaRepository,
+                                AlertaEventPublisher alertaEventPublisher) {
+        this.mantenimientoRepository = mantenimientoRepository;
+        this.vehiculoRepository      = vehiculoRepository;
+        this.alertaFactory           = alertaFactory;
+        this.alertaRepository        = alertaRepository;
+        this.alertaEventPublisher    = alertaEventPublisher;
+    }
 
     @Transactional
     public MantenimientoResponse registrar(CrearMantenimientoRequest request) {
         Vehiculo vehiculo = vehiculoRepository.findById(request.idVehiculo())
-            .orElseThrow(() -> new ResourceNotFoundException(
-                "Vehículo no encontrado: " + request.idVehiculo()));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Vehículo no encontrado: " + request.idVehiculo()));
 
         if (request.proxKm() != null && request.proxKm() <= request.kmEnServicio()) {
-            throw new com.freskoexpress.shared.exception.BusinessException(
-                "prox_km debe ser mayor al kilometraje actual");
+            throw new BusinessException(
+                    "prox_km debe ser mayor al kilometraje actual");
         }
 
         Mantenimiento m = Mantenimiento.builder()
-            .vehiculo(vehiculo)
-            .tipo(request.tipo())
-            .descripcion(request.descripcion())
-            .kmEnServicio(request.kmEnServicio())
-            .fechaServicio(request.fechaServicio())
-            .proxKm(request.proxKm())
-            .proxFecha(request.proxFecha())
-            .build();
+                .vehiculo(vehiculo)
+                .tipo(request.tipo())
+                .descripcion(request.descripcion())
+                .kmEnServicio(request.kmEnServicio())
+                .fechaServicio(request.fechaServicio())
+                .proxKm(request.proxKm())
+                .proxFecha(request.proxFecha())
+                .build();
 
         return MantenimientoResponse.from(mantenimientoRepository.save(m));
     }
@@ -71,7 +82,7 @@ public class MantenimientoService {
         // Por km (margen de 1000 km)
         mantenimientoRepository.findProximosPorKm(1000).forEach(m -> {
             String motivo = "Kilometraje actual " + m.getVehiculo().getKilometraje()
-                + " km. Próximo servicio a los " + m.getProxKm() + " km";
+                    + " km. Próximo servicio a los " + m.getProxKm() + " km";
             Alerta alerta = alertaFactory.crearAlertaMantenimiento(m.getVehiculo(), motivo);
             alertaRepository.save(alerta);
             alertaEventPublisher.publicar(alerta);
@@ -80,7 +91,7 @@ public class MantenimientoService {
 
     public List<MantenimientoResponse> historialPorVehiculo(Integer idVehiculo) {
         return mantenimientoRepository
-            .findByVehiculoIdVehiculoOrderByFechaServicioDesc(idVehiculo)
-            .stream().map(MantenimientoResponse::from).toList();
+                .findByVehiculoIdVehiculoOrderByFechaServicioDesc(idVehiculo)
+                .stream().map(MantenimientoResponse::from).toList();
     }
 }

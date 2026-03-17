@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.inventario;
 
-import com.freskoexpress.shared.enums.CategoriaProducto;
+import com.freskoexpress.api.shared.enums.CategoriaProducto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

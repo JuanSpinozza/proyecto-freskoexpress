@@ -1,7 +1,7 @@
 package com.freskoexpress.api.domain.proveedor.dto;
 
-import com.freskoexpress.domain.proveedor.Proveedor;
-import com.freskoexpress.shared.enums.EstadoProveedor;
+import com.freskoexpress.api.domain.proveedor.Proveedor;
+import com.freskoexpress.api.shared.enums.EstadoProveedor;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

@@ -1,8 +1,8 @@
 package com.freskoexpress.api.domain.facturacion.dto;
 
-import com.freskoexpress.domain.facturacion.Factura;
-import com.freskoexpress.shared.enums.EstadoFactura;
-import com.freskoexpress.shared.enums.MetodoPago;
+import com.freskoexpress.api.domain.facturacion.Factura;
+import com.freskoexpress.api.shared.enums.EstadoFactura;
+import com.freskoexpress.api.shared.enums.MetodoPago;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

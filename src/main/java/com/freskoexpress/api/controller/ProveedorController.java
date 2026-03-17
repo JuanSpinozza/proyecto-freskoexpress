@@ -1,12 +1,11 @@
 package com.freskoexpress.api.controller;
 
-import com.freskoexpress.domain.proveedor.ProveedorService;
-import com.freskoexpress.domain.proveedor.dto.*;
-import com.freskoexpress.shared.enums.EstadoProveedor;
+import com.freskoexpress.api.domain.proveedor.ProveedorService;
+import com.freskoexpress.api.domain.proveedor.dto.*;
+import com.freskoexpress.api.shared.enums.EstadoProveedor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/proveedores")
-@RequiredArgsConstructor
 @Tag(name = "Proveedores", description = "Registro y gestión de proveedores")
 public class ProveedorController {
 
     private final ProveedorService proveedorService;
+
+    public ProveedorController(ProveedorService proveedorService) {
+        this.proveedorService = proveedorService;
+    }
 
     @PostMapping
     @Operation(summary = "Registrar proveedor — ejecuta cadena de validación")

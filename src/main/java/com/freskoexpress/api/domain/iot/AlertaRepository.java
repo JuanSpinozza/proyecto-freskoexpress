@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.iot;
 
-import com.freskoexpress.shared.enums.TipoAlerta;
+import com.freskoexpress.api.shared.enums.TipoAlerta;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

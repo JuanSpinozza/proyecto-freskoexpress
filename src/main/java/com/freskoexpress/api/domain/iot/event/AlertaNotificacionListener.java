@@ -1,7 +1,9 @@
 package com.freskoexpress.api.domain.iot.event;
 
-import com.freskoexpress.shared.enums.SeveridadAlerta;
-import lombok.extern.slf4j.Slf4j;
+import com.freskoexpress.api.domain.iot.Alerta;
+import com.freskoexpress.api.shared.enums.SeveridadAlerta;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -18,8 +20,9 @@ import org.springframework.stereotype.Component;
  * para despachar SMS y Push al operador y administrador.
  */
 @Component
-@Slf4j
 public class AlertaNotificacionListener {
+
+    private static final Logger log = LoggerFactory.getLogger(AlertaNotificacionListener.class);
 
     @Async
     @EventListener
@@ -28,12 +31,12 @@ public class AlertaNotificacionListener {
 
         if (alerta.getSeveridad() == SeveridadAlerta.critica) {
             log.warn("[ALERTA CRITICA] Tipo={} | Mensaje={}",
-                alerta.getTipo(), alerta.getMensaje());
+                    alerta.getTipo(), alerta.getMensaje());
             // TODO: notificacionAdapter.enviarSMS(operadores, alerta.getMensaje());
             // TODO: notificacionAdapter.enviarPush(admins, alerta.getMensaje());
         } else {
             log.info("[ALERTA] Tipo={} | Mensaje={}",
-                alerta.getTipo(), alerta.getMensaje());
+                    alerta.getTipo(), alerta.getMensaje());
             // TODO: notificacionAdapter.enviarEmail(operadores, alerta.getMensaje());
         }
     }

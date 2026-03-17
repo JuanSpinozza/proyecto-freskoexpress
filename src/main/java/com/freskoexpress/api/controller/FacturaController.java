@@ -1,28 +1,30 @@
 package com.freskoexpress.api.controller;
 
-import com.freskoexpress.domain.facturacion.FacturaService;
-import com.freskoexpress.domain.facturacion.dto.*;
+import com.freskoexpress.api.domain.facturacion.FacturaService;
+import com.freskoexpress.api.domain.facturacion.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/facturas")
-@RequiredArgsConstructor
 @Tag(name = "Facturación", description = "Generación y pago de facturas con Strategy Pattern")
 public class FacturaController {
 
     private final FacturaService facturaService;
 
+    public FacturaController(FacturaService facturaService) {
+        this.facturaService = facturaService;
+    }
+
     @PostMapping("/pedido/{idPedido}")
     @Operation(summary = "Generar factura para un pedido confirmado")
     public ResponseEntity<FacturaResponse> generar(@PathVariable Integer idPedido) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(facturaService.generarFactura(idPedido));
+                .body(facturaService.generarFactura(idPedido));
     }
 
     @GetMapping("/pedido/{idPedido}")

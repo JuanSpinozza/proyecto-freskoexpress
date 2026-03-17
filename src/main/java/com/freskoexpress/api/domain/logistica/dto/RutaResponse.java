@@ -1,7 +1,7 @@
 package com.freskoexpress.api.domain.logistica.dto;
 
-import com.freskoexpress.domain.logistica.Ruta;
-import com.freskoexpress.shared.enums.EstadoRuta;
+import com.freskoexpress.api.domain.logistica.Ruta;
+import com.freskoexpress.api.shared.enums.EstadoRuta;
 
 import java.time.LocalDate;
 

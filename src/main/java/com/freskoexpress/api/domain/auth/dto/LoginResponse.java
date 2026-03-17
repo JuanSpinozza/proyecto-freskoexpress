@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.auth.dto;
 
-import com.freskoexpress.shared.enums.RolUsuario;
+import com.freskoexpress.api.shared.enums.RolUsuario;
 
 public record LoginResponse(
     String token,

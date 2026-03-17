@@ -1,7 +1,7 @@
 package com.freskoexpress.api.domain.proveedor.validation;
 
-import com.freskoexpress.domain.proveedor.dto.CrearProveedorRequest;
-import com.freskoexpress.shared.exception.BusinessException;
+import com.freskoexpress.api.domain.proveedor.dto.CrearProveedorRequest;
+import com.freskoexpress.api.shared.exception.BusinessException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,13 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class NitFormatoValidator extends ProveedorValidationHandler {
 
-    private static final String NIT_REGEX = "^\d{7,10}-\d$";
+    private static final String NIT_REGEX = "^\\d{7,10}-\\d$";
+
 
     @Override
     protected void doValidate(CrearProveedorRequest request) {
         if (request.nit() == null || !request.nit().matches(NIT_REGEX)) {
             throw new BusinessException(
-                "Formato de NIT inválido. Use el formato: 900234567-1");
+                    "Formato de NIT inválido. Use el formato: 900234567-1");
         }
     }
 }

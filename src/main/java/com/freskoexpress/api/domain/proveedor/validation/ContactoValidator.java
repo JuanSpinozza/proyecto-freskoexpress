@@ -1,7 +1,7 @@
 package com.freskoexpress.api.domain.proveedor.validation;
 
-import com.freskoexpress.domain.proveedor.dto.CrearProveedorRequest;
-import com.freskoexpress.shared.exception.BusinessException;
+import com.freskoexpress.api.domain.proveedor.dto.CrearProveedorRequest;
+import com.freskoexpress.api.shared.exception.BusinessException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ContactoValidator extends ProveedorValidationHandler {
 
-    private static final String EMAIL_REGEX   = "^[\w.+-]+@[\w-]+\.[\w.]+$";
-    private static final String PHONE_REGEX   = "^\+?[0-9]{7,15}$";
+    private static final String EMAIL_REGEX = "^[\\w.+\\-]+@[\\w\\-]+\\.[\\w.]+$";
+    private static final String PHONE_REGEX = "^\\+?[0-9]{7,15}$";
 
     @Override
     protected void doValidate(CrearProveedorRequest request) {

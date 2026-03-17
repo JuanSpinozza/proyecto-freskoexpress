@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.iot.event;
 
-import com.freskoexpress.domain.iot.Alerta;
+import com.freskoexpress.api.domain.iot.Alerta;
 import org.springframework.context.ApplicationEvent;
 
 /**

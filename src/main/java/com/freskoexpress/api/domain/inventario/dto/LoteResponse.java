@@ -1,7 +1,7 @@
 package com.freskoexpress.api.domain.inventario.dto;
 
-import com.freskoexpress.domain.inventario.Lote;
-import com.freskoexpress.shared.enums.EstadoLote;
+import com.freskoexpress.api.domain.inventario.Lote;
+import com.freskoexpress.api.shared.enums.EstadoLote;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

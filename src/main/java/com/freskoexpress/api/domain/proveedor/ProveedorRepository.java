@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.proveedor;
 
-import com.freskoexpress.shared.enums.EstadoProveedor;
+import com.freskoexpress.api.shared.enums.EstadoProveedor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

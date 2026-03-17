@@ -1,7 +1,7 @@
 package com.freskoexpress.api.domain.auth.dto;
 
-import com.freskoexpress.domain.auth.Usuario;
-import com.freskoexpress.shared.enums.RolUsuario;
+import com.freskoexpress.api.domain.auth.Usuario;
+import com.freskoexpress.api.shared.enums.RolUsuario;
 
 import java.time.OffsetDateTime;
 

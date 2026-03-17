@@ -1,11 +1,10 @@
 package com.freskoexpress.api.controller;
 
-import com.freskoexpress.domain.inventario.InventarioService;
-import com.freskoexpress.domain.inventario.dto.*;
+import com.freskoexpress.api.domain.inventario.InventarioService;
+import com.freskoexpress.api.domain.inventario.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +13,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/inventario")
-@RequiredArgsConstructor
 @Tag(name = "Inventario", description = "Productos, lotes y control FIFO")
 public class InventarioController {
 
     private final InventarioService inventarioService;
+
+    public InventarioController(InventarioService inventarioService) {
+        this.inventarioService = inventarioService;
+    }
 
     @GetMapping("/productos")
     @Operation(summary = "Catálogo completo de productos activos")

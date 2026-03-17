@@ -1,7 +1,7 @@
 package com.freskoexpress.api.domain.mantenimiento.dto;
 
-import com.freskoexpress.domain.mantenimiento.Mantenimiento;
-import com.freskoexpress.shared.enums.TipoMantenimiento;
+import com.freskoexpress.api.domain.mantenimiento.Mantenimiento;
+import com.freskoexpress.api.shared.enums.TipoMantenimiento;
 
 import java.time.LocalDate;
 

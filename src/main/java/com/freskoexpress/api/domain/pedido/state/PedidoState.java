@@ -1,7 +1,7 @@
 package com.freskoexpress.api.domain.pedido.state;
 
-import com.freskoexpress.domain.pedido.Pedido;
-import com.freskoexpress.shared.enums.EstadoPedido;
+import com.freskoexpress.api.domain.pedido.Pedido;
+import com.freskoexpress.api.shared.enums.EstadoPedido;
 
 /**
  * State Pattern — Ciclo de vida del Pedido.

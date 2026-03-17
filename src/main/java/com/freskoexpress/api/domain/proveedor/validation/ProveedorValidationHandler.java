@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.proveedor.validation;
 
-import com.freskoexpress.domain.proveedor.dto.CrearProveedorRequest;
+import com.freskoexpress.api.domain.proveedor.dto.CrearProveedorRequest;
 
 /**
  * Chain of Responsibility — Validación de proveedores.

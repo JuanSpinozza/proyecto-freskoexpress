@@ -1,11 +1,10 @@
 package com.freskoexpress.api.controller;
 
-import com.freskoexpress.domain.iot.SensorService;
-import com.freskoexpress.domain.iot.dto.*;
+import com.freskoexpress.api.domain.iot.SensorService;
+import com.freskoexpress.api.domain.iot.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +12,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/sensores")
-@RequiredArgsConstructor
 @Tag(name = "IoT / Sensores", description = "Ingesta de lecturas y gestión de alertas")
 public class SensorController {
 
     private final SensorService sensorService;
+
+    public SensorController(SensorService sensorService) {
+        this.sensorService = sensorService;
+    }
 
     @PostMapping("/lectura")
     @Operation(summary = "Recibir lectura IoT — evalúa threshold y publica evento si hay alerta")

@@ -1,6 +1,6 @@
 package com.freskoexpress.api.domain.logistica;
 
-import com.freskoexpress.shared.enums.EstadoRuta;
+import com.freskoexpress.api.shared.enums.EstadoRuta;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

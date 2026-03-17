@@ -1,7 +1,7 @@
 package com.freskoexpress.api.domain.inventario.dto;
 
-import com.freskoexpress.domain.inventario.Producto;
-import com.freskoexpress.shared.enums.CategoriaProducto;
+import com.freskoexpress.api.domain.inventario.Producto;
+import com.freskoexpress.api.shared.enums.CategoriaProducto;
 
 import java.math.BigDecimal;
 

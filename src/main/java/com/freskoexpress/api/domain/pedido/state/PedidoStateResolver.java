@@ -1,7 +1,6 @@
 package com.freskoexpress.api.domain.pedido.state;
 
-import com.freskoexpress.shared.enums.EstadoPedido;
-import lombok.RequiredArgsConstructor;
+import com.freskoexpress.api.shared.enums.EstadoPedido;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,16 +11,19 @@ import java.util.List;
  * sin ningún switch o if.
  */
 @Component
-@RequiredArgsConstructor
 public class PedidoStateResolver {
 
     private final List<PedidoState> states;
 
+    public PedidoStateResolver(List<PedidoState> states) {
+        this.states = states;
+    }
+
     public PedidoState resolve(EstadoPedido estadoPedido) {
         return states.stream()
-            .filter(s -> s.getEstado() == estadoPedido)
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException(
-                "Estado no reconocido: " + estadoPedido));
+                .filter(s -> s.getEstado() == estadoPedido)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Estado no reconocido: " + estadoPedido));
     }
 }
