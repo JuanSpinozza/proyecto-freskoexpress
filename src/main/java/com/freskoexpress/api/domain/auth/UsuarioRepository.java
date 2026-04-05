@@ -10,10 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+
     @Query("SELECT u FROM Usuario u WHERE u.correo = :correo")
     UserDetails buscarPorCorreo(@Param("correo") String correo);
 
     Optional<Usuario> findByCorreo(String correo);
+
     boolean existsByCorreo(String correo);
+
     List<Usuario> findByRolAndActivoTrue(RolUsuario rol);
 }

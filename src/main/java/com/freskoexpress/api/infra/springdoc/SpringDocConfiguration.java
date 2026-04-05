@@ -23,13 +23,13 @@ public class SpringDocConfiguration {
                                         .bearerFormat("JWT")))
                 .info(new Info()
                         .title("SaludK API")
-                        .description("API Rest de la aplicación SaludK, que contiene las funcionalidades CRUD de usuarios y pacientes, además, autenticación de usuarios.")
+                        .description("API Rest de la aplicación FreskoExpress, que contiene las funcionalidades CRUD de usuarios, además, autenticación de usuarios.")
                         .contact(new Contact()
                                 .name("Arquitectura de Software")
-                                .url("https://github.com/Santiago1470"))
+                                .url("https://github.com/JuanSpinozza"))
                         .license(new License()
                                 .name("Apache 2.0")
-                                .url("http://saludk.arquitectura/api/licencia")));
+                                .url("http://freskoexpress.arquitectura/api/licencia")));
     }
 
 }

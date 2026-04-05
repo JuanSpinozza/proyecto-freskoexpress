@@ -2,6 +2,8 @@ package com.freskoexpress.api.domain.auth;
 
 import com.freskoexpress.api.shared.enums.RolUsuario;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,13 +30,17 @@ public class Usuario implements UserDetails {
     @Column(name = "contrasena_hash", nullable = false, length = 255)
     private String contrasenaHash;
 
+    // Roles aceptados: admin, conductor, operador, cliente
     @Enumerated(EnumType.STRING)
+    // @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    // @Column(columnDefinition = "rol_usuario")
     @Column(nullable = false)
     private RolUsuario rol;
 
     @Column(name = "mfa_habilitado", nullable = false)
     private Boolean mfaHabilitado = false;
 
+    // Para usuarios de rol conductor
     @Column(length = 30)
     private String licencia;
 

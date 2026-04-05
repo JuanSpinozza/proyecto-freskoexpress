@@ -3,6 +3,7 @@ package com.freskoexpress.api.controller;
 import com.freskoexpress.api.domain.inventario.InventarioService;
 import com.freskoexpress.api.domain.inventario.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/inventario")
+@SecurityRequirement(name = "bearer-key")
 @Tag(name = "Inventario", description = "Productos, lotes y control FIFO")
 public class InventarioController {
 
