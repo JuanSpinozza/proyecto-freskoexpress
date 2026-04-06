@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/inventario")
 @SecurityRequirement(name = "bearer-key")
 @Tag(name = "Inventario", description = "Productos, lotes y control FIFO")
+@PreAuthorize("hasAnyRole('ADMIN', 'OPERADOR')")
 public class InventarioController {
 
     private final InventarioService inventarioService;

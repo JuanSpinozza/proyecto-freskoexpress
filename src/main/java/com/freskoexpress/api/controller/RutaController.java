@@ -4,11 +4,13 @@ import com.freskoexpress.api.domain.logistica.RutaService;
 import com.freskoexpress.api.domain.logistica.dto.*;
 import com.freskoexpress.api.shared.enums.EstadoRuta;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -17,6 +19,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/rutas")
 @Tag(name = "Rutas", description = "Planificación de rutas con Facade Pattern")
+@SecurityRequirement(name = "bearer-key")
+@PreAuthorize("hasAnyRole('ADMIN', 'OPERADOR', 'CONDUCTOR')")
 public class RutaController {
 
     private final RutaService rutaService;
@@ -32,7 +36,7 @@ public class RutaController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar rutas por fecha")
+    @Operation(summary = "Listar rutas por fecha (YYYY-MM-DD)")
     public ResponseEntity<List<RutaResponse>> porFecha(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
         return ResponseEntity.ok(rutaService.listarPorFecha(fecha));
