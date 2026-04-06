@@ -3,9 +3,11 @@ package com.freskoexpress.api.controller;
 import com.freskoexpress.api.domain.iot.SensorService;
 import com.freskoexpress.api.domain.iot.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/sensores")
 @Tag(name = "IoT / Sensores", description = "Ingesta de lecturas y gestión de alertas")
+@SecurityRequirement(name = "bearer-key")
+@PreAuthorize("hasAnyRole('ADMIN')")
 public class SensorController {
 
     private final SensorService sensorService;

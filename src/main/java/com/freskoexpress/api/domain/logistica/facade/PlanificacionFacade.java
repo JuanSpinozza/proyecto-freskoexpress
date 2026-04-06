@@ -149,6 +149,6 @@ public class PlanificacionFacade {
                 .map(id -> pedidoRepository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException(
                                 "Pedido no encontrado: " + id)))
-                .toList();
+                .collect(java.util.stream.Collectors.toList()); // ✅ mutable
     }
 }
