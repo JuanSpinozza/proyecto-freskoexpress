@@ -27,14 +27,14 @@ jobs:
       - name: Verify environment variables
         run: |
           echo "DB_HOST is set to: ${DB_HOST:-MISSING}"
-          echo "DB_PORT is set to: ${DB_PORT:-MISSING}"
+          echo "DB_PORT is set to: ${JWT_SECRET:-MISSING}"
           echo "DB_NAME is set to: ${DB_NAME:-MISSING}"
           echo "DB_USERNAME is set to: ${DB_USERNAME:-MISSING}"
           # No muestres el password real, solo si existe
           if [ -z "$DB_PASSWORD" ]; then echo "DB_PASSWORD: MISSING"; else echo "DB_PASSWORD: present"; fi
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_PORT: ${{ secrets.JWT_SECRET }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
