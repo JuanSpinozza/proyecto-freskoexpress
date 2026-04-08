@@ -24,20 +24,30 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: Verify environment variables
-        run: |
-          echo "DB_HOST is set to: ${DB_HOST:-MISSING}"
-          echo "DB_PORT is set to: ${JWT_SECRET:-MISSING}"
-          echo "DB_NAME is set to: ${DB_NAME:-MISSING}"
-          echo "DB_USERNAME is set to: ${DB_USERNAME:-MISSING}"
-          # No muestres el password real, solo si existe
-          if [ -z "$DB_PASSWORD" ]; then echo "DB_PASSWORD: MISSING"; else echo "DB_PASSWORD: present"; fi
+      - name: 🔍 DEBUG - Mostrar secrets (solo para depuración)
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.JWT_SECRET }}
+          DB_PORT: ${{ secrets.DB_PORT }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: |
+          echo "=== VALORES DE SECRETS (enmascarados por GitHub) ==="
+          echo "DB_HOST: '${DB_HOST}'"
+          echo "DB_PORT: '${DB_PORT}'"
+          echo "DB_NAME: '${DB_NAME}'"
+          echo "DB_USERNAME: '${DB_USERNAME}'"
+          echo "DB_PASSWORD length: ${#DB_PASSWORD} caracteres"
+          echo "JWT_SECRET length: ${#JWT_SECRET} caracteres"
+          echo "===================================================="
+          # Verificar si algún secret está vacío
+          if [ -z "$DB_HOST" ]; then echo "❌ DB_HOST está VACÍO"; else echo "✅ DB_HOST tiene valor"; fi
+          if [ -z "$DB_PORT" ]; then echo "❌ DB_PORT está VACÍO"; else echo "✅ DB_PORT tiene valor"; fi
+          if [ -z "$DB_NAME" ]; then echo "❌ DB_NAME está VACÍO"; else echo "✅ DB_NAME tiene valor"; fi
+          if [ -z "$DB_USERNAME" ]; then echo "❌ DB_USERNAME está VACÍO"; else echo "✅ DB_USERNAME tiene valor"; fi
+          if [ -z "$DB_PASSWORD" ]; then echo "❌ DB_PASSWORD está VACÍO"; else echo "✅ DB_PASSWORD tiene valor"; fi
+          if [ -z "$JWT_SECRET" ]; then echo "❌ JWT_SECRET está VACÍO"; else echo "✅ JWT_SECRET tiene valor"; fi
 
       - name: Build with Maven
         env:
