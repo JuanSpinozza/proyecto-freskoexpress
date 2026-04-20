@@ -75,4 +75,11 @@ public class FacturaService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Factura no encontrada para pedido: " + idPedido));
     }
+
+    public List<FacturaResponse> obtenerTodas() {
+        return facturaRepository.findAll()
+                .stream()
+                .map(FacturaResponse::from)
+                .toList();
+    }
 }
