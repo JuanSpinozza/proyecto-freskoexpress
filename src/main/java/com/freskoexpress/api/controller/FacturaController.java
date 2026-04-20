@@ -31,6 +31,12 @@ public class FacturaController {
                 .body(facturaService.generarFactura(idPedido));
     }
 
+    @GetMapping("/all")
+    @Operation(summary = "Obtener todas las facturas")
+    public ResponseEntity<List<FacturaResponse>> obtenerTodas() {
+        return ResponseEntity.ok(facturaService.obtenerTodas());
+    }
+
     @GetMapping("/pedido/{idPedido}")
     @Operation(summary = "Obtener factura de un pedido")
     public ResponseEntity<FacturaResponse> obtener(@PathVariable Integer idPedido) {
