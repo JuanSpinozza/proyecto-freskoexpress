@@ -80,16 +80,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-         client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_17CC06559419426ABC296EE4A7A8C906 }}
-         tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_66A8B5E2BDE54DD29ADF3EBFAA5D0D61 }}
-         subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D2A13409499D4CABB3B16CE38562AE89 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_17CC06559419426ABC296EE4A7A8C906 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_66A8B5E2BDE54DD29ADF3EBFAA5D0D61 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D2A13409499D4CABB3B16CE38562AE89 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'backend-freskoexpressv2''
+          app-name: 'backend-freskoexpressv2'
           slot-name: 'Production'
           package: '*.jar'
-          
-          
