@@ -24,7 +24,38 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
+      - name: 🔍 DEBUG - Mostrar secrets (solo para depuración)
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: |
+          echo "=== VALORES DE SECRETS (enmascarados por GitHub) ==="
+          echo "DB_HOST: '${DB_HOST}'"
+          echo "DB_PORT: '${DB_PORT}'"
+          echo "DB_NAME: '${DB_NAME}'"
+          echo "DB_USERNAME: '${DB_USERNAME}'"
+          echo "DB_PASSWORD length: ${#DB_PASSWORD} caracteres"
+          echo "JWT_SECRET length: ${#JWT_SECRET} caracteres"
+          echo "===================================================="
+          # Verificar si algún secret está vacío
+          if [ -z "$DB_HOST" ]; then echo "❌ DB_HOST está VACÍO"; else echo "✅ DB_HOST tiene valor"; fi
+          if [ -z "$DB_PORT" ]; then echo "❌ DB_PORT está VACÍO"; else echo "✅ DB_PORT tiene valor"; fi
+          if [ -z "$DB_NAME" ]; then echo "❌ DB_NAME está VACÍO"; else echo "✅ DB_NAME tiene valor"; fi
+          if [ -z "$DB_USERNAME" ]; then echo "❌ DB_USERNAME está VACÍO"; else echo "✅ DB_USERNAME tiene valor"; fi
+          if [ -z "$DB_PASSWORD" ]; then echo "❌ DB_PASSWORD está VACÍO"; else echo "✅ DB_PASSWORD tiene valor"; fi
+          if [ -z "$JWT_SECRET" ]; then echo "❌ JWT_SECRET está VACÍO"; else echo "✅ JWT_SECRET tiene valor"; fi
+
       - name: Build with Maven
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: mvn clean install
 
       - name: Upload artifact for deployment job
@@ -49,15 +80,16 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_17CC06559419426ABC296EE4A7A8C906 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_66A8B5E2BDE54DD29ADF3EBFAA5D0D61 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D2A13409499D4CABB3B16CE38562AE89 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2063D0892AB941C1853B2F9E56BA6C0B }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4DF9310027734B8682B960261B196F91 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7120E6E84CDD4F24899A7D349AA29FB2 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'backend-freskoexpressv2'
+          app-name: 'freskoexpress-back'
           slot-name: 'Production'
           package: '*.jar'
+          
           
