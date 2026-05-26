@@ -24,7 +24,39 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
+      - name: 🔍 DEBUG - Mostrar secrets (solo para depuración)
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: |
+          echo "=== VALORES DE SECRETS (enmascarados por GitHub) ==="
+          echo "DB_HOST: '${DB_HOST}'"
+          echo "DB_PORT: '${DB_PORT}'"
+          echo "DB_NAME: '${DB_NAME}'"
+          echo "DB_USERNAME: '${DB_USERNAME}'"
+          echo "DB_PASSWORD length: ${#DB_PASSWORD} caracteres"
+          echo "JWT_SECRET length: ${#JWT_SECRET} caracteres"
+          echo "===================================================="
+          # Verificar si algún secret está vacío
+          if [ -z "$DB_HOST" ]; then echo "❌ DB_HOST está VACÍO"; else echo "✅ DB_HOST tiene valor"; fi
+          if [ -z "$DB_PORT" ]; then echo "❌ DB_PORT está VACÍO"; else echo "✅ DB_PORT tiene valor"; fi
+          if [ -z "$DB_NAME" ]; then echo "❌ DB_NAME está VACÍO"; else echo "✅ DB_NAME tiene valor"; fi
+          if [ -z "$DB_USERNAME" ]; then echo "❌ DB_USERNAME está VACÍO"; else echo "✅ DB_USERNAME tiene valor"; fi
+          if [ -z "$DB_PASSWORD" ]; then echo "❌ DB_PASSWORD está VACÍO"; else echo "✅ DB_PASSWORD tiene valor"; fi
+          if [ -z "$JWT_SECRET" ]; then echo "❌ JWT_SECRET está VACÍO"; else echo "✅ JWT_SECRET tiene valor"; fi
+
       - name: Build with Maven
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: mvn clean install
 
       - name: Upload artifact for deployment job
@@ -35,7 +67,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build 
+    needs: build
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
@@ -60,4 +92,3 @@ jobs:
           app-name: 'backend-freskoexpressv2'
           slot-name: 'Production'
           package: '*.war'
-          
