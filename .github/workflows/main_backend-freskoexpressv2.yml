@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy WAR app to Azure Web App - backend-freskoexpressv2
+name: Build and deploy JAR app to Azure Web App - backend-freskoexpressv2
 
 on:
   push:
@@ -24,46 +24,14 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: 🔍 DEBUG - Mostrar secrets (solo para depuración)
-        env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        run: |
-          echo "=== VALORES DE SECRETS (enmascarados por GitHub) ==="
-          echo "DB_HOST: '${DB_HOST}'"
-          echo "DB_PORT: '${DB_PORT}'"
-          echo "DB_NAME: '${DB_NAME}'"
-          echo "DB_USERNAME: '${DB_USERNAME}'"
-          echo "DB_PASSWORD length: ${#DB_PASSWORD} caracteres"
-          echo "JWT_SECRET length: ${#JWT_SECRET} caracteres"
-          echo "===================================================="
-          # Verificar si algún secret está vacío
-          if [ -z "$DB_HOST" ]; then echo "❌ DB_HOST está VACÍO"; else echo "✅ DB_HOST tiene valor"; fi
-          if [ -z "$DB_PORT" ]; then echo "❌ DB_PORT está VACÍO"; else echo "✅ DB_PORT tiene valor"; fi
-          if [ -z "$DB_NAME" ]; then echo "❌ DB_NAME está VACÍO"; else echo "✅ DB_NAME tiene valor"; fi
-          if [ -z "$DB_USERNAME" ]; then echo "❌ DB_USERNAME está VACÍO"; else echo "✅ DB_USERNAME tiene valor"; fi
-          if [ -z "$DB_PASSWORD" ]; then echo "❌ DB_PASSWORD está VACÍO"; else echo "✅ DB_PASSWORD tiene valor"; fi
-          if [ -z "$JWT_SECRET" ]; then echo "❌ JWT_SECRET está VACÍO"; else echo "✅ JWT_SECRET tiene valor"; fi
-
       - name: Build with Maven
-        env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: mvn clean install
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -71,7 +39,7 @@ jobs:
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
-
+  
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -81,9 +49,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6F1A19BEBD33447E88897DB73AC868B7 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1935675034BD49BDA6B8488E75DA531B }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5EBE1914125E4F8FBB9E33DFD27E1C93 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_17CC06559419426ABC296EE4A7A8C906 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_66A8B5E2BDE54DD29ADF3EBFAA5D0D61 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D2A13409499D4CABB3B16CE38562AE89 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -91,4 +59,5 @@ jobs:
         with:
           app-name: 'backend-freskoexpressv2'
           slot-name: 'Production'
-          package: '*.war'
+          package: '*.jar'
+          
